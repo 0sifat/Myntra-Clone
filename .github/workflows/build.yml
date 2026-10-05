@@ -20,10 +20,13 @@ jobs:
           fetch-depth: 0
 
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v5
+        uses: sonarsource/sonarqube-scan-action@v4   # older scanner CLI, safer with SonarQube Server 9.9.x
+        with:
+          args: -X   # debug logging to expose the real error; remove once the scan passes
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_SCANNER_OPTS: -Xmx2048m   # guards against scanner out-of-memory
 
       # If you wish to fail your job when the Quality Gate is red, uncomment the
       # following lines.
